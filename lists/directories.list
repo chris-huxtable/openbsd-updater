@@ -1,0 +1,14 @@
+# Manually maintained list of directories to delete.
+
+/usr/include/g++/amd64-unknown-openbsd6.0/
+/usr/include/g++/amd64-unknown-openbsd6.1/
+/usr/include/g++/amd64-unknown-openbsd6.2/
+/usr/lib/gcc-lib/amd64-unknown-openbsd6.0/
+/usr/lib/gcc-lib/amd64-unknown-openbsd6.1/
+/usr/lib/gcc-lib/amd64-unknown-openbsd6.2/
+/usr/libdata/perl5/amd64-openbsd/5.20.3/
+/usr/libdata/perl5/site_perl/
+/usr/libdata/perl5/Module/Build/
+/usr/libdata/perl5/CGI
+/usr/share/compile/
+/usr/lib/clang/4.0.0/

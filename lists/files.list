@@ -1,0 +1,4 @@
+# Manually maintained list of files to delete.
+
+/usr/lib/libc.so.89.2
+/usr/lib/libc.so.89.2.a
