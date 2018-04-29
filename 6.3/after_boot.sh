@@ -7,13 +7,6 @@ fi
 
 CWD=$(pwd)
 
-echo "Removing Old Kernel:"
-rm /obsd
-
-echo "Updating Devices:"
-cd /dev
-./MAKEDEV all
-
 echo "Install Bootloader"
 installboot sd0
 

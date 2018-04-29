@@ -9,6 +9,7 @@ VERS=$(echo $VERSION | sed -e "s/\.//g")
 UPDATE_DIR=/tmp/update
 REMOTE_DIR=https://$HOST/pub/OpenBSD/$VERSION/$ARCH
 
+export TMPDIR=$UPDATE_DIR/tar
 function download {
 	if ! [[ -e ${UPDATE_DIR}/$1 ]]; then
 		ftp -Vo _$1 ${REMOTE_DIR}/$1
@@ -20,7 +21,12 @@ function download {
 
 function install {
 	echo "- Installing $1"
-	tar -C / -xzphmf $1${VERS}.tgz
+	tar -C / -xzephmf $1${VERS}.tgz
+
+	if [[ $? -ne 0 ]]; then
+		echo "x Failed Installing $1${VERS}.tgz"
+		exit 1
+	fi
 }
 
 if [ $(id -u) != 0 ]; then
@@ -127,6 +133,13 @@ install "comp"
 #install "game"
 
 install "base"			# Must be last
+
+echo "Removing Old Kernel:"
+rm /obsd
+
+echo "Updating Devices:"
+cd /dev
+./MAKEDEV all
 
 cd $CWD
 cp after_boot.sh /etc/rc.firsttime
