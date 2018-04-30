@@ -29,18 +29,22 @@ function install {
 	fi
 }
 
-if [ $(id -u) != 0 ]; then
+if [[ $(id -u) != 0 ]]; then
 	echo "Requires Root"
 	exit 1
 fi
 
 mkdir -p ${UPDATE_DIR}
+mkdir -p $UPDATE_DIR/tar
 cp after_boot.sh ${UPDATE_DIR}/after_boot.sh
 cp cleanup.sh ${UPDATE_DIR}/cleanup.sh
+
+export TMPDIR=$UPDATE_DIR/tar
 
 CWD=$(pwd)
 
 cd ${UPDATE_DIR}
+
 
 echo "Fetching Components:"
 download "bsd.mp"
@@ -71,12 +75,15 @@ fi
 
 echo "\nPrepare Userland:"
 
+
 echo "- Removing old man pages"
 rm -rf /usr/share/man
 rm -rf /usr/X11R6/man
 
+
 echo "- Removing old linking files"
 rm -rf /usr/share/compile
+
 
 echo "- Removing optional directories"
 rm -rf /usr/X11R6/*
@@ -84,16 +91,20 @@ rm -rf /usr/share/games
 rm -rf /usr/games
 rm -rf /var/games
 
+
 # 6.1 -> 6.2
 echo "- Changing group on atjobs"
 chgrp -R crontab /var/cron/atjobs
+
 
 echo "- Backing up reboot as oreboot"
 cp /sbin/reboot /sbin/oreboot
 
 
+
 echo "\nInstall New Kernel:"
 mv bsd bsd.sp
+
 
 echo "- Installing boot blocks"
 installboot sd0
@@ -121,6 +132,7 @@ else
 	echo " - Failed"
 fi
 
+
 echo "\nInstall Userland:"
 
 install "xbase"
@@ -134,8 +146,10 @@ install "comp"
 
 install "base"			# Must be last
 
+
 echo "Removing Old Kernel:"
 rm /obsd
+
 
 echo "Updating Devices:"
 cd /dev
